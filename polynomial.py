@@ -1,10 +1,12 @@
-
 class X:
     def __init__(self):
         pass
 
     def __repr__(self):
         return "X"
+
+    def evaluate(self, i):
+        return i  # Return the value of X when evaluating
 
 class Int:
     def __init__(self, i):
@@ -13,6 +15,9 @@ class Int:
     def __repr__(self):
         return str(self.i)
 
+    def evaluate(self, i):
+        return self.i  # Return the integer value itself
+
 class Add:
     def __init__(self, p1, p2):
         self.p1 = p1
@@ -20,6 +25,11 @@ class Add:
     
     def __repr__(self):
         return repr(self.p1) + " + " + repr(self.p2)
+    
+    def evaluate(self, i):
+        p1 = self.p1.evaluate(i)
+        p2 = self.p2.evaluate(i)
+        return p1 + p2  # Simply return the sum of evaluated values
 
 class Mul:
     def __init__(self, p1, p2):
@@ -34,7 +44,11 @@ class Mul:
         if isinstance(self.p2, Add):
             return repr(self.p1) + " * ( " + repr(self.p2) + " )"
         return repr(self.p1) + " * " + repr(self.p2)
-
+    
+    def evaluate(self, i):
+        p1 = self.p1.evaluate(i)
+        p2 = self.p2.evaluate(i)
+        return p1 * p2  # Return the product of evaluated values
 
 poly = Add( Add( Int(4), Int(3)), Add( X(), Mul( Int(1), Add( Mul(X(), X()), Int(1)))))
-print(poly)
+print(poly.evaluate(-1))
